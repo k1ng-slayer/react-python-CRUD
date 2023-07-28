@@ -4,9 +4,14 @@ import React, { useState } from "react";
 function Delete() {
     const [del, setDel] = useState("");
 
+    const handleChange = (event) => {
+        console.log("typing...");
+        setDel(event.target.value);
+    };
+
     const handleClick = () => {
         axios
-            .delete(`http://localhost:3000/delete`, { transfer: del })
+            .delete("http://localhost:5000/delete", { data: { id: del } })
             .then((response) => {
                 console.log("Deleted", response);
                 setDel("");
@@ -23,10 +28,7 @@ function Delete() {
                     type="number"
                     value={del}
                     placeholder="Enter ID"
-                    onChange={(event) => {
-                        console.log("typing...");
-                        setDel(event.target.value);
-                    }}
+                    onChange={handleChange}
                 />
             </p>
             <button type="button" onClick={handleClick}>

@@ -27,14 +27,29 @@ def create():
     return jsonify({"message": "Transfer added successfully!"}), 201
 
 
-@app.route("/update", methods=["GET","POST"])
+@app.route("/update", methods=["PUT"])
 def update():
-    return
+    data = request.get_json()
+    transfer_data = data.get("transfer")
+    transfer_id = transfer_data.get("id")
+    new_name = transfer_data.get("name")
+
+    update_url = f"{API_URL}/{transfer_id}"
+    response = requests.put(update_url, json={"name": new_name})
+    response.raise_for_status()
+    return jsonify({"message": f"Transfer with id {transfer_id} updated successfully!"}), 200
 
 
 @app.route("/delete", methods=["DELETE"])
 def delete():
-    return
+    data = request.get_json()
+    transfer_id = data.get("id")
+
+    delete_url = f"{API_URL}/{transfer_id}"
+    response = requests.delete(delete_url)
+    response.raise_for_status()
+    return jsonify({"message": f"Transfer with id {transfer_id} deleted successfully!"}), 200
+    
     
 if __name__ == "__main__":
     app.run(debug=True)
